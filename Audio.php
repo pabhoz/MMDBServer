@@ -3,7 +3,7 @@
 require_once './headers.php';
 require_once 'libs/Pahoz/MySQLiManager/MySQLiManager.php';
 $db = new MySQLiManager('localhost','root','','mmdb');
-$table = "Imagen";
+$table = "Sonido";
 
 if(isset($_GET["exec"])){
 	if($_GET["exec"] != null && $_GET["exec"] != ""){
