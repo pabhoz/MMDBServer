@@ -169,14 +169,7 @@ class MySQLiManager{
 
 		$stmt = 'DELETE FROM '.$table.' WHERE '.$where;
 		$result = $this->link->query($stmt) or die($this->link->error.__LINE__);
-		if($result->num_rows > 0) {
-			$response = false;
-		}
-		else {
-			$response = true;
-		}
-
-		return $response;
+		return $result;
 
 	}
 

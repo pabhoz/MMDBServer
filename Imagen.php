@@ -6,7 +6,6 @@ $table = "Imagen";
 
 if(isset($_GET["exec"])){
 	if($_GET["exec"] != null && $_GET["exec"] != ""){
-		if(function_exists($_GET["exec"])){
 			switch ($_GET["exec"]){
 				case "insert":
 					if(!isset($_GET["name"]) ||
@@ -15,41 +14,44 @@ if(isset($_GET["exec"])){
 					!isset($_GET["file"])){
 						die("DIE!!!!!!");
 					}else{
-						$_GET["exec"]($_GET["name"],
-						$_GET["type"],
-						$_GET["size"],
-						$_GET["file"]);
+						insert($_GET["name"],$_GET["type"],
+						$_GET["size"],$_GET["file"]);
 					}
 				break;
-				default:
-					$_GET["exec"]();
+				case "select":
+					if(isset($_GET["id"])){
+						select($_GET["id"]);
+					}else{
+						select();
+					}
 				break;
+				case "delete":
+					if(isset($_GET["id"])){
+						del($_GET["id"]);
+					}else{
+						die("Falta el id a borrar");
+					}
 			}
 		}else{
 			die("La función <b>".$_GET['exec']."</b> no existe");
 		}
-	}
 }
 
 function insert($name,$type,$size,$file){
  $imagen = ["id"=>null,"name"=>$name,"type"=>$type,"size"=>$size,"file"=>$file];
  global $db,$table;
  $r = $db->insert($table,$imagen);
- return $r;
+ print json_encode($r);
 }
-
-function selectAll(){
+function select($id = null){
 	global $db,$table;
-	$fetch = $db->select("*",$table);
+	$where = ($id != null) ? "`id` = $id":"";
+	$fetch = $db->select("*",$table,$where);
 	$fetch = ($fetch == NULL) ? [] : $fetch;
-
-	echo "<pre>";
-	foreach($fetch as $key => $registro){
-		print_r($registro);	
-	}
-	echo "</pre>";
+	print json_encode($fetch);	
 }
-
-function holi(){
-	echo "Holi";
+function del($id){
+	global $db, $table;
+	$r = $db->delete($table,["id"=>$id]);
+	print json_encode($r);	
 }
