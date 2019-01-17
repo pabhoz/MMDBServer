@@ -97,16 +97,8 @@ class MySQLiManager{
 		$stmt = "INSERT INTO ".$table." (".$columnas.") VALUES(".$valores.") ".$where.";";
 		
                 //$result = $this->link->query($stmt) or die($this->link->error.__LINE__);
-                $result = $this->link->query($stmt) or die($this->link->error);
-		
-                if($result > 0) {
-			$response = false;
-		}
-		else {
-			$response = true;
-		}
-
-		return $response;
+        $result = $this->link->query($stmt) or die($this->link->error);
+		return ($result) ? true : false;
 
 	}
 
